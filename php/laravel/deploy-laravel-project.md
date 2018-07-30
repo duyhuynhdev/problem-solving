@@ -42,7 +42,7 @@ After reading a ton of posts, I have found the good way deploy our app to Apache
    * Using create soft link command `ln -s [path_to_project]/public var/www/html/[sitename]`
 8. Test a site by accessing [domain]/[sitename]
 
-#### Sub problem: `php aritisan storage:link`
+#### Sub problem: `php artisan storage:link`
 
 Although I have run `php aritisan storage:link`, we cannot access to any sub directory inside of `[path_to_project]/public/storage`.<br>
 
