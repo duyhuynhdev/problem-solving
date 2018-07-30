@@ -6,7 +6,7 @@ I haved upgraded PHP 5.6 to 7.2 and install sqlsvr as follows.
 
 ## Upgrade PHP 7.2
 *   **Step1**: Enable Remi repo for PHP 7.2
-    `sudo yum-config-manager --enable remi-php72`
+    `sudo yum-config-manager --enable remi-php72` ( if command `yum-config-manager` cannot be found please install `yum-utils` pakage)
 *   **Step2**:  Update repo
     `sudo yum update`
 *   **Step3**: Check PHP version after upgraded
@@ -15,6 +15,7 @@ I haved upgraded PHP 5.6 to 7.2 and install sqlsvr as follows.
 ## Install sqlsrv drivers
 *   **Step1**: Install sqlsrv
     ` yum --enablerepo=remi,remi-php72 install php-sqlsrv`
+    ( If it is required or get an error about `msodbcsql` please install this package by following this guidline : https://github.com/mkleehammer/pyodbc/wiki/Connecting-to-SQL-Server-from-RHEL-6-or-Centos-7 and run above command again. )
 *   **Step2**:  Check php ini setting
     `php --ini`
 *   **Step3**: Restart apache 
