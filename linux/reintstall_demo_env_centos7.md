@@ -17,8 +17,7 @@ SELinux is disabled on the Vultr CentOS 7 x64 server instance by default. If you
   * install wget by using `yum install wget`
   * install remi repo by following this post http://www.servermom.org/how-to-enable-remi-repo-on-centos-7-6-and-5/2790/
     * In case it lack of EPEL dependency, please install it by using https://fedoraproject.org/wiki/EPEL 
-  * install php `yum --enablerepo=remi-php72 install php php-mcrypt php-cli php-gd php-curl php-mysql php-pgsql php-ldap php-zip php-fileinfo
-`
+  * install php `yum --enablerepo=remi-php72 install php php-mcrypt php-cli php-gd php-curl php-mysql php-pgsql php-ldap php-zip php-fileinfo php-mbstring php-xml`
 
 
 ### PostgreSQL 9.5
