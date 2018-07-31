@@ -1,5 +1,7 @@
 # Re-install demo enviroment on CentOS7 [KYDEVEL]
 
+This post use for re-setting up the environment for laravel app (5.6) on CentOS 7.0 from zero.
+
 ## Requirement applications:
  * PHP ^7.0
  * Composer
@@ -89,3 +91,16 @@ Access postgreSQL by using:
   
 ## GIT
   * Install it by using `sudo yum install git`
+  
+## Firewall setting 
+
+  * Public port for Apache: 
+     * `sudo firewall-cmd --permanent --add-port=80/tcp` 
+     * `sudo firewall-cmd --permanent --add-port=443/tcp`
+     * `sudo firewall-cmd --reload`
+     * (Restart Apache )
+  * Public port for PostgreSQL: 
+     * `sudo firewall-cmd --zone=public --permanent --add-service=http`
+     * `sudo firewall-cmd --zone=public --permanent --add-port=5432/tcp`
+     * `sudo firewall-cmd --reload`
+     * (Restart PostgreSQL)
