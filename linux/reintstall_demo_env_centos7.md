@@ -11,15 +11,16 @@ This post use for re-setting up the environment for laravel app (5.6) on CentOS 
  * SQL server driver
 ## Process
 ### APACHE
-  * install httpd by using `yum install httpd`
-  * start service `sudo systemctl start httpd.service`
-SELinux is disabled on the Vultr CentOS 7 x64 server instance by default. If you turn it on manually, you need also configure SELinux as below:
-  * `sudo setsebool -P httpd_can_network_connect on` and `sudo setsebool -P httpd_can_network_connect_db on`
+  * Install httpd by using `yum install httpd`
+  * Start httpd service `sudo systemctl start httpd.service`
+  * SELinux is disabled on the Vultr CentOS 7 x64 server instance by default. If you turn it on manually, you need also configure SELinux as below: 
+     * `sudo setsebool -P httpd_can_network_connect on` 
+     * `sudo setsebool -P httpd_can_network_connect_db on`
 ### PHP
-  * install wget by using `yum install wget`
-  * install remi repo by following this post http://www.servermom.org/how-to-enable-remi-repo-on-centos-7-6-and-5/2790/
-    * In case it lack of EPEL dependency, please install it by using https://fedoraproject.org/wiki/EPEL 
-  * install php `yum --enablerepo=remi-php72 install php php-mcrypt php-cli php-gd php-curl php-mysql php-pgsql php-ldap php-zip php-fileinfo php-mbstring php-xml`
+  * Install wget by using `yum install wget`
+  * Install remi repo by following this post http://www.servermom.org/how-to-enable-remi-repo-on-centos-7-6-and-5/2790/
+     * In case it lack of EPEL dependency, please install it by using https://fedoraproject.org/wiki/EPEL 
+  * Install php `yum --enablerepo=remi-php72 install php php-mcrypt php-cli php-gd php-curl php-mysql php-pgsql php-ldap php-zip php-fileinfo php-mbstring php-xml`
 
 
 ### PostgreSQL 9.5
