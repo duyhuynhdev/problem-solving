@@ -9,6 +9,8 @@ This post use for re-setting up the environment for laravel app (5.6) on CentOS 
  * PostgreSQL
  * Git
  * SQL server driver
+ * JAVA 8
+ * TOMCAT 9
 ## Process
 ### APACHE
   * Install httpd by using `yum install httpd`
