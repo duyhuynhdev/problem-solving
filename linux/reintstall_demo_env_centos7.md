@@ -93,6 +93,81 @@ Access postgreSQL by using:
 ## GIT
   * Install it by using `sudo yum install git`
   
+## JAVA 8 
+
+  * Install Java via yum `sudo yum install java-1.8.0-openjdk.x86_64`
+  * Check the result by using `java -version`
+  * Edit or create enviroment file and add JAVA_HOME:
+    * `vi /etc/environment`
+    * View Java root path by typing `sudo update-alternatives --config java`
+    * Add and save to `environtment` file `JAVA_HOME="/usr/lib/jvm/java-1.8.0-openjdk-1.8.0.181-3.b13.el7_5.x86_64/jre"`
+    * Edit `bash_profile` file : `vi ~/.bash_profile`
+    * Add and export `PATH` variable : `export JAVA_HOME=/usr/lib/jvm/java-1.8.0-openjdk-1.8.0.111-1.b15.el7_2.x86_64/jre` and `export PATH=$JAVA_HOME/bin:$PATH` [*notice : no space in sentence]
+    * Rerun bash file : `source ~/.bash_profile`
+    * Check it : `echo $JAVA_HOME`
+## TOMCAT 9
+
+  * Create a new tomcat group: `sudo groupadd tomcat`
+  * Create a tomcat user `sudo useradd -M -s /sbin/nologin -g tomcat -d /opt/tomcat tomcat` (member of the tomcat group, home directory of /opt/tomcat (install), shell of /bin/false (nobody login))
+  * Create develoment dir for download tomcat
+    * `cd ~`
+    * `mkdir development`
+    * `wget http://ftp.jaist.ac.jp/pub/apache/tomcat/tomcat-9/v9.0.10/bin/apache-tomcat-9.0.10.tar.gz` (check new verion on https://tomcat.apache.org/)
+  * Install tomcat to the `/opt/tomcat` directory
+    * `sudo mkdir /opt/tomcat`
+    * `sudo tar xvf apache-tomcat-8*tar.gz -C /opt/tomcat --strip-components=1` (C | update permissions :: proper access to the tomcat installation)
+  * Jump into woring dir : `cd /opt/tomcat`
+  * Change tomcat group ownership over the entire installation directory: `sudo chgrp -R tomcat /opt/tomcat`
+  * Change tomcat group read access to the conf directory, and execute access to the directory:
+    *`sudo chmod -R g+r conf`
+    *`sudo chmod g+x conf`
+  * Make the tomcat user the owner of the directories: `sudo chown -R tomcat webapps/ work/ temp/ logs/`
+  * Create service file for tomcat:
+    * Create and open unit file service: `sudo vi /etc/systemd/system/tomcat.service`
+    * Paste the content of tomcat.service  as follow:
+           
+                # Systemd unit file for tomcat
+                [Unit]
+                Description=Apache Tomcat Web Application Container
+                After=syslog.target network.target
+
+                [Service]
+                Type=forking
+
+                Environment=JAVA_HOME=/usr/lib/jvm/java-1.8.0-openjdk-1.8.0.181-3.b13.el7_5.x86_64/jre
+                Environment=CATALINA_PID=/opt/tomcat/temp/tomcat.pid
+                Environment=CATALINA_HOME=/opt/tomcat
+                Environment=CATALINA_BASE=/opt/tomcat
+                Environment='CATALINA_OPTS=-Xms512M -Xmx1024M -server -XX:+UseParallelGC'
+                Environment='JAVA_OPTS=-Djava.awt.headless=true -Djava.security.egd=file:/dev/./urandom -Duser.language=en -Duser.region=US'
+
+                ExecStart=/opt/tomcat/bin/startup.sh
+                ExecStop=/bin/kill -15 $MAINPID
+
+                User=tomcat
+                Group=tomcat
+                UMask=0007
+                RestartSec=10
+                Restart=always
+
+                [Install]
+                WantedBy=multi-user.target
+ 
+    * Reload Systemd to load the tomcat unit file: `sudo systemctl daemon-reload`
+    * Start tomcat service: `sudo systemctl start tomcat`
+    * View status of tomcat: `sudo systemctl status tomcat`
+    * Enable the tomcat service start on server boot (optional):  `sudo systemctl enable tomcat`
+    * Change de port of tomcat webserver in conflicts: `sudo vi /opt/tomcat/conf/server.xml` and search for <Connector port="8080" ...
+    * Add tomcat user in tomcat-users.xml file: `sudo vim /opt/tomcat/conf/tomcat-users.xml`
+     * Add line `<role rolename="manager-gui"/>` and `<user username="[yourusername]" password="[yourpass]" roles="manager-gui"/>`
+    * Remove restriction in access to the tomcat manager by COMMENT in 2 files : `/opt/tomcat/webapps/manager/META-INF/context.xml` and `/opt/tomcat/webapps/host-manager/META-INF/context.xml` as follows
+    
+                <!--  <Valve className="org.apache.catalina.valves.RemoteAddrValve" 
+                     allow="127\.\d+\.\d+\.\d+|::1|0:0:0:0:0:0:0:1" /> -->   
+    
+    * Restart tomcat `systemctl restart tomcat`
+   
+
 ## Firewall setting 
 
   * Public port for Apache: 
@@ -105,3 +180,7 @@ Access postgreSQL by using:
      * `sudo firewall-cmd --zone=public --permanent --add-port=5432/tcp`
      * `sudo firewall-cmd --reload`
      * (Restart PostgreSQL)
+  * Public port for Tomcat:
+     * `sudo firewall-cmd --zone=public --permanent --add-port=8080/tcp`
+     * `sudo firewall-cmd --reload`
+
