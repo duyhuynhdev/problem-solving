@@ -1,4 +1,4 @@
-# Some command and note when creat an ETL app design
+# Some command and note when create an ETL app design
 
 * `create-react-app etl` - Create a new react application project
 * `npm install @material-ui/core` - Install React Material UI Design library
